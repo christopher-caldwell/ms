@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": "../src",
+    "paths": {
+      "@/*": ["*"]
+    },
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  },
+  "exclude": ["node_modules"],
+  "include": ["."]
+}
