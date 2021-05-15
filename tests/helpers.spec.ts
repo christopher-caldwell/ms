@@ -6,7 +6,7 @@ import {
   createMsFromWeeks,
   createMsFromMonths,
   createMsFromYears,
-} from './helpers'
+} from '@/helpers'
 
 describe('Testing Helper Functions', () => {
   test('Seconds', () => {

@@ -8,7 +8,7 @@ import {
   createMsFromMonths,
   createMsFromYears,
   createMsFromDays,
-} from './helpers'
+} from '@/helpers'
 
 /** Should resolve to 3d */
 const roundingInputMs = 234234234
@@ -217,5 +217,50 @@ describe('ms(number)', () => {
     expect(ms(roundingInputMs)).toBe('3d')
 
     expect(ms(-roundingInputMs)).toBe('-3d')
+  })
+})
+
+describe("Asking for a unit that doesn't qualify", () => {
+  test('Asking for seconds', () => {
+    expect(ms(800, { long: true, preferredUnit: 's' })).toBe('800 ms')
+    expect(ms(800, { preferredUnit: 's' })).toBe('800ms')
+    expect(ms(-800, { long: true, preferredUnit: 's' })).toBe('-800 ms')
+    expect(ms(-800, { preferredUnit: 's' })).toBe('-800ms')
+  })
+  test('Asking for minutes', () => {
+    expect(ms(createMsFromSeconds(-45), { long: true, preferredUnit: 'm' })).toBe('-45 seconds')
+    expect(ms(createMsFromSeconds(-45), { preferredUnit: 'm' })).toBe('-45s')
+    expect(ms(createMsFromSeconds(45), { long: true, preferredUnit: 'm' })).toBe('45 seconds')
+    expect(ms(createMsFromSeconds(45), { preferredUnit: 'm' })).toBe('45s')
+  })
+  test('Asking for hours', () => {
+    expect(ms(createMsFromMinutes(-15), { long: true, preferredUnit: 'h' })).toBe('-15 minutes')
+    expect(ms(createMsFromMinutes(-15), { preferredUnit: 'h' })).toBe('-15m')
+    expect(ms(createMsFromMinutes(15), { long: true, preferredUnit: 'h' })).toBe('15 minutes')
+    expect(ms(createMsFromMinutes(15), { preferredUnit: 'h' })).toBe('15m')
+  })
+  test('Asking for days', () => {
+    expect(ms(createMsFromHours(-15), { long: true, preferredUnit: 'd' })).toBe('-15 hours')
+    expect(ms(createMsFromHours(-15), { preferredUnit: 'd' })).toBe('-15h')
+    expect(ms(createMsFromHours(15), { long: true, preferredUnit: 'd' })).toBe('15 hours')
+    expect(ms(createMsFromHours(15), { preferredUnit: 'd' })).toBe('15h')
+  })
+  test('Asking for weeks', () => {
+    expect(ms(createMsFromDays(-6), { long: true, preferredUnit: 'w' })).toBe('-6 days')
+    expect(ms(createMsFromDays(-6), { preferredUnit: 'w' })).toBe('-6d')
+    expect(ms(createMsFromDays(6), { long: true, preferredUnit: 'w' })).toBe('6 days')
+    expect(ms(createMsFromDays(6), { preferredUnit: 'w' })).toBe('6d')
+  })
+  test('Asking for months', () => {
+    expect(ms(createMsFromWeeks(-3), { long: true, preferredUnit: 'mo' })).toBe('-3 weeks')
+    expect(ms(createMsFromWeeks(-3), { preferredUnit: 'mo' })).toBe('-3w')
+    expect(ms(createMsFromWeeks(3), { long: true, preferredUnit: 'mo' })).toBe('3 weeks')
+    expect(ms(createMsFromWeeks(3), { preferredUnit: 'mo' })).toBe('3w')
+  })
+  test('Asking for years', () => {
+    expect(ms(createMsFromMonths(-3), { long: true, preferredUnit: 'mo' })).toBe('-3 months')
+    expect(ms(createMsFromMonths(-3), { preferredUnit: 'y' })).toBe('-3mo')
+    expect(ms(createMsFromMonths(3), { long: true, preferredUnit: 'mo' })).toBe('3 months')
+    expect(ms(createMsFromMonths(3), { preferredUnit: 'y' })).toBe('3mo')
   })
 })
