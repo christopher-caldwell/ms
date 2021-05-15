@@ -23,7 +23,6 @@ module.exports = {
       statements: 95,
     },
   },
-  coverageReporters: ['json-summary', 'text'],
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.{js,ts}'],
   coveragePathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/tests/'],
