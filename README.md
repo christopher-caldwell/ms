@@ -1,6 +1,6 @@
-# Common AWS Actions
+# MS
 
-Easily convert various time formats to milliseconds, and milliseconds back to the formats.
+Easily convert various time formats to milliseconds, and milliseconds back to the formats. Forked from [vercel/ms](https://github.com/vercel/ms)
 
 <p align="center">
   <h4/>

@@ -1,260 +1,221 @@
 import { ms } from '@/index'
 
-describe('ms(number, { long: true })', function () {
-  it('should not throw an error', function () {
-    expect(function () {
+import {
+  createMsFromSeconds,
+  createMsFromMinutes,
+  createMsFromHours,
+  createMsFromWeeks,
+  createMsFromMonths,
+  createMsFromYears,
+  createMsFromDays,
+} from './helpers'
+
+/** Should resolve to 3d */
+const roundingInputMs = 234234234
+
+describe('ms(number, { long: true })', () => {
+  it('should not throw an error', () => {
+    expect(() => {
       ms(500, { long: true })
     }).not.toThrowError()
   })
 
-  it('should support milliseconds', function () {
+  it('should support milliseconds', () => {
     expect(ms(500, { long: true })).toBe('500 ms')
+    expect(ms(1100, { long: true, preferredUnit: 'ms' })).toBe('1100 ms')
+    expect(ms(1100, { long: true })).toBe('1 second')
 
     expect(ms(-500, { long: true })).toBe('-500 ms')
+    expect(ms(-1100, { long: true, preferredUnit: 'ms' })).toBe('-1100 ms')
+    expect(ms(-1100, { long: true })).toBe('-1 second')
   })
 
-  it('should support seconds', function () {
-    expect(ms(1000, { long: true })).toBe('1 second')
-    expect(ms(1200, { long: true })).toBe('1 second')
-    expect(ms(10000, { long: true })).toBe('10 seconds')
+  it('should support seconds', () => {
+    expect(ms(createMsFromSeconds(1), { long: true })).toBe('1 second')
+    expect(ms(createMsFromSeconds(1.2), { long: true })).toBe('1 second')
+    expect(ms(createMsFromSeconds(10), { long: true })).toBe('10 seconds')
+    expect(ms(createMsFromSeconds(65), { long: true, preferredUnit: 's' })).toBe('65 seconds')
+    expect(ms(createMsFromSeconds(65), { long: true })).toBe('1 minute')
 
-    expect(ms(-1000, { long: true })).toBe('-1 second')
-    expect(ms(-1200, { long: true })).toBe('-1 second')
-    expect(ms(-10000, { long: true })).toBe('-10 seconds')
+    expect(ms(createMsFromSeconds(-1), { long: true })).toBe('-1 second')
+    expect(ms(createMsFromSeconds(-1.2), { long: true })).toBe('-1 second')
+    expect(ms(createMsFromSeconds(-10), { long: true })).toBe('-10 seconds')
+    expect(ms(createMsFromSeconds(-65), { long: true, preferredUnit: 's' })).toBe('-65 seconds')
+    expect(ms(createMsFromSeconds(-65), { long: true })).toBe('-1 minute')
   })
 
-  it('should support minutes', function () {
-    expect(ms(60 * 1000, { long: true })).toBe('1 minute')
-    expect(ms(60 * 1200, { long: true })).toBe('1 minute')
-    expect(ms(60 * 10000, { long: true })).toBe('10 minutes')
+  it('should support minutes', () => {
+    expect(ms(createMsFromMinutes(1), { long: true })).toBe('1 minute')
+    expect(ms(createMsFromMinutes(1.2), { long: true })).toBe('1 minute')
+    expect(ms(createMsFromMinutes(10), { long: true })).toBe('10 minutes')
+    expect(ms(createMsFromMinutes(65), { long: true, preferredUnit: 'm' })).toBe('65 minutes')
+    expect(ms(createMsFromMinutes(65), { long: true })).toBe('1 hour')
 
-    expect(ms(-1 * 60 * 1000, { long: true })).toBe('-1 minute')
-    expect(ms(-1 * 60 * 1200, { long: true })).toBe('-1 minute')
-    expect(ms(-1 * 60 * 10000, { long: true })).toBe('-10 minutes')
+    expect(ms(createMsFromMinutes(-1), { long: true })).toBe('-1 minute')
+    expect(ms(createMsFromMinutes(-1.2), { long: true })).toBe('-1 minute')
+    expect(ms(createMsFromMinutes(-10), { long: true })).toBe('-10 minutes')
+    expect(ms(createMsFromMinutes(-65), { long: true, preferredUnit: 'm' })).toBe('-65 minutes')
+    expect(ms(createMsFromMinutes(-65), { long: true })).toBe('-1 hour')
   })
 
-  it('should support hours', function () {
-    expect(ms(60 * 60 * 1000, { long: true })).toBe('1 hour')
-    expect(ms(60 * 60 * 1200, { long: true })).toBe('1 hour')
-    expect(ms(60 * 60 * 10000, { long: true })).toBe('10 hours')
+  it('should support hours', () => {
+    expect(ms(createMsFromHours(1), { long: true })).toBe('1 hour')
+    expect(ms(createMsFromHours(1.2), { long: true })).toBe('1 hour')
+    expect(ms(createMsFromHours(10), { long: true })).toBe('10 hours')
+    expect(ms(createMsFromHours(25), { long: true, preferredUnit: 'h' })).toBe('25 hours')
+    expect(ms(createMsFromHours(25), { long: true })).toBe('1 day')
 
-    expect(ms(-1 * 60 * 60 * 1000, { long: true })).toBe('-1 hour')
-    expect(ms(-1 * 60 * 60 * 1200, { long: true })).toBe('-1 hour')
-    expect(ms(-1 * 60 * 60 * 10000, { long: true })).toBe('-10 hours')
+    expect(ms(createMsFromHours(-1), { long: true })).toBe('-1 hour')
+    expect(ms(createMsFromHours(-1.2), { long: true })).toBe('-1 hour')
+    expect(ms(createMsFromHours(-10), { long: true })).toBe('-10 hours')
+    expect(ms(createMsFromHours(-25), { long: true, preferredUnit: 'h' })).toBe('-25 hours')
+    expect(ms(createMsFromHours(-25), { long: true })).toBe('-1 day')
   })
 
-  it('should support days', function () {
-    expect(ms(24 * 60 * 60 * 1000, { long: true })).toBe('1 day')
-    expect(ms(24 * 60 * 60 * 1200, { long: true })).toBe('1 day')
-    expect(ms(24 * 60 * 60 * 10000, { long: true })).toBe('10 days')
+  it('should support days', () => {
+    expect(ms(createMsFromDays(1), { long: true })).toBe('1 day')
+    expect(ms(createMsFromDays(1.2), { long: true })).toBe('1 day')
+    expect(ms(createMsFromDays(10), { long: true, preferredUnit: 'd' })).toBe('10 days')
+    // Without unit, rounded down is still one week
+    expect(ms(createMsFromDays(10), { long: true })).toBe('1 week')
 
-    expect(ms(-1 * 24 * 60 * 60 * 1000, { long: true })).toBe('-1 day')
-    expect(ms(-1 * 24 * 60 * 60 * 1200, { long: true })).toBe('-1 day')
-    expect(ms(-1 * 24 * 60 * 60 * 10000, { long: true })).toBe('-10 days')
+    expect(ms(createMsFromDays(-1), { long: true })).toBe('-1 day')
+    expect(ms(createMsFromDays(-1.2), { long: true })).toBe('-1 day')
+    expect(ms(createMsFromDays(-10), { long: true, preferredUnit: 'd' })).toBe('-10 days')
+    // Without unit, rounded down is still one week
+    expect(ms(createMsFromDays(-10), { long: true })).toBe('-1 week')
   })
 
-  it('should round', function () {
-    expect(ms(234234234, { long: true })).toBe('3 days')
+  it('should support weeks', () => {
+    expect(ms(createMsFromWeeks(1), { long: true })).toBe('1 week')
+    expect(ms(createMsFromWeeks(1.2), { long: true })).toBe('1 week')
+    expect(ms(createMsFromWeeks(10), { long: true, preferredUnit: 'w' })).toBe('10 weeks')
+    expect(ms(createMsFromWeeks(10), { long: true })).toBe('2 months')
 
-    expect(ms(-234234234, { long: true })).toBe('-3 days')
+    expect(ms(createMsFromWeeks(-1), { long: true })).toBe('-1 week')
+    expect(ms(createMsFromWeeks(-1.2), { long: true })).toBe('-1 week')
+    expect(ms(createMsFromWeeks(-10), { long: true, preferredUnit: 'w' })).toBe('-10 weeks')
+    expect(ms(createMsFromWeeks(-10), { long: true })).toBe('-2 months')
+  })
+
+  it('should support months', () => {
+    expect(ms(createMsFromMonths(1), { long: true })).toBe('1 month')
+    expect(ms(createMsFromMonths(1.2), { long: true })).toBe('1 month')
+    expect(ms(createMsFromMonths(10), { long: true })).toBe('10 months')
+    expect(ms(createMsFromMonths(13), { long: true, preferredUnit: 'mo' })).toBe('13 months')
+    expect(ms(createMsFromMonths(13), { long: true })).toBe('1 year')
+
+    expect(ms(createMsFromMonths(-1), { long: true })).toBe('-1 month')
+    expect(ms(createMsFromMonths(-1.2), { long: true })).toBe('-1 month')
+    expect(ms(createMsFromMonths(-10), { long: true })).toBe('-10 months')
+    expect(ms(createMsFromMonths(-13), { long: true, preferredUnit: 'mo' })).toBe('-13 months')
+    expect(ms(createMsFromMonths(-13), { long: true })).toBe('-1 year')
+  })
+
+  it('should support years', () => {
+    expect(ms(createMsFromYears(1), { long: true })).toBe('1 year')
+    expect(ms(createMsFromYears(1.025), { long: true })).toBe('1 year')
+    expect(ms(createMsFromYears(1.2), { long: true })).toBe('1 year')
+    expect(ms(createMsFromYears(10), { long: true })).toBe('10 years')
+
+    expect(ms(createMsFromYears(-1), { long: true })).toBe('-1 year')
+    expect(ms(createMsFromYears(-1.2), { long: true })).toBe('-1 year')
+    expect(ms(createMsFromYears(-10), { long: true })).toBe('-10 years')
+  })
+
+  it('should round', () => {
+    expect(ms(roundingInputMs, { long: true })).toBe('3 days')
+
+    expect(ms(-roundingInputMs, { long: true })).toBe('-3 days')
   })
 })
 
-// numbers
-
-describe('ms(number)', function () {
-  it('should not throw an error', function () {
-    expect(function () {
+describe('ms(number)', () => {
+  it('should not throw an error', () => {
+    expect(() => {
       ms(500)
     }).not.toThrowError()
   })
 
-  it('should support milliseconds', function () {
+  it('should support milliseconds', () => {
     expect(ms(500)).toBe('500ms')
 
     expect(ms(-500)).toBe('-500ms')
   })
 
-  it('should support seconds', function () {
-    expect(ms(1000)).toBe('1s')
-    expect(ms(10000)).toBe('10s')
+  it('should support seconds', () => {
+    expect(ms(createMsFromSeconds(1))).toBe('1s')
+    expect(ms(createMsFromSeconds(10))).toBe('10s')
 
-    expect(ms(-1000)).toBe('-1s')
-    expect(ms(-10000)).toBe('-10s')
+    expect(ms(createMsFromSeconds(-1))).toBe('-1s')
+    expect(ms(createMsFromSeconds(-10))).toBe('-10s')
   })
 
-  it('should support minutes', function () {
-    expect(ms(60 * 1000)).toBe('1m')
-    expect(ms(60 * 10000)).toBe('10m')
+  it('should support minutes', () => {
+    expect(ms(createMsFromMinutes(1))).toBe('1m')
+    expect(ms(createMsFromMinutes(10))).toBe('10m')
 
-    expect(ms(-1 * 60 * 1000)).toBe('-1m')
-    expect(ms(-1 * 60 * 10000)).toBe('-10m')
+    expect(ms(createMsFromMinutes(-1))).toBe('-1m')
+    expect(ms(createMsFromMinutes(-10))).toBe('-10m')
   })
 
-  it('should support hours', function () {
-    expect(ms(60 * 60 * 1000)).toBe('1h')
-    expect(ms(60 * 60 * 10000)).toBe('10h')
+  it('should support hours', () => {
+    expect(ms(createMsFromHours(1))).toBe('1h')
+    expect(ms(createMsFromHours(10))).toBe('10h')
 
-    expect(ms(-1 * 60 * 60 * 1000)).toBe('-1h')
-    expect(ms(-1 * 60 * 60 * 10000)).toBe('-10h')
+    expect(ms(createMsFromHours(-1))).toBe('-1h')
+    expect(ms(createMsFromHours(-10))).toBe('-10h')
   })
 
-  it('should support days', function () {
-    expect(ms(24 * 60 * 60 * 1000)).toBe('1d')
-    expect(ms(24 * 60 * 60 * 10000)).toBe('10d')
+  it('should support days', () => {
+    expect(ms(createMsFromDays(1))).toBe('1d')
+    expect(ms(createMsFromDays(1.2))).toBe('1d')
+    expect(ms(createMsFromDays(10), { preferredUnit: 'd' })).toBe('10d')
+    // Without preferred unit, this is over 1 week
+    expect(ms(createMsFromDays(10))).toBe('1w')
 
-    expect(ms(-1 * 24 * 60 * 60 * 1000)).toBe('-1d')
-    expect(ms(-1 * 24 * 60 * 60 * 10000)).toBe('-10d')
+    expect(ms(createMsFromDays(-1))).toBe('-1d')
+    expect(ms(createMsFromDays(-1.2))).toBe('-1d')
+    expect(ms(createMsFromDays(-10), { preferredUnit: 'd' })).toBe('-10d')
+    // Without preferred unit, this is over 1 week
+    expect(ms(createMsFromDays(-10))).toBe('-1w')
   })
 
-  it('should round', function () {
-    expect(ms(234234234)).toBe('3d')
+  it('should support weeks', () => {
+    expect(ms(createMsFromWeeks(1))).toBe('1w')
+    expect(ms(createMsFromWeeks(1.2))).toBe('1w')
+    expect(ms(createMsFromWeeks(10), { preferredUnit: 'w' })).toBe('10w')
+    expect(ms(createMsFromWeeks(10))).toBe('2mo')
 
-    expect(ms(-234234234)).toBe('-3d')
-  })
-})
-
-describe('ms(number, { long: true, decimal: n })', function () {
-  it('should not throw an error', function () {
-    expect(function () {
-      ms(500, { long: true, decimal: 1 })
-    }).not.toThrowError()
+    expect(ms(createMsFromWeeks(-1))).toBe('-1w')
+    expect(ms(createMsFromWeeks(-1.2))).toBe('-1w')
+    expect(ms(createMsFromWeeks(-10), { preferredUnit: 'w' })).toBe('-10w')
+    expect(ms(createMsFromWeeks(-10))).toBe('-2mo')
   })
 
-  it('should support milliseconds', function () {
-    expect(ms(500, { long: true, decimal: 1 })).toBe('500 ms')
+  it('should support months', () => {
+    expect(ms(createMsFromMonths(1))).toBe('1mo')
+    expect(ms(createMsFromMonths(1.2))).toBe('1mo')
+    expect(ms(createMsFromMonths(10))).toBe('10mo')
 
-    expect(ms(-500, { long: true, decimal: 1 })).toBe('-500 ms')
+    expect(ms(createMsFromMonths(-1))).toBe('-1mo')
+    expect(ms(createMsFromMonths(-1.2))).toBe('-1mo')
+    expect(ms(createMsFromMonths(-10))).toBe('-10mo')
   })
 
-  it('should support seconds', function () {
-    expect(ms(1000, { long: true, decimal: 1 })).toBe('1 second')
-    expect(ms(1200, { long: true, decimal: 1 })).toBe('1.2 second')
-    expect(ms(1234, { long: true, decimal: 2 })).toBe('1.23 second')
-    expect(ms(10000, { long: true, decimal: 1 })).toBe('10 seconds')
+  it('should support years', () => {
+    expect(ms(createMsFromYears(1))).toBe('1y')
+    expect(ms(createMsFromYears(1.2))).toBe('1y')
+    expect(ms(createMsFromYears(10))).toBe('10y')
 
-    expect(ms(-1000, { long: true, decimal: 1 })).toBe('-1 second')
-    expect(ms(-1200, { long: true, decimal: 1 })).toBe('-1.2 second')
-    expect(ms(-10000, { long: true, decimal: 1 })).toBe('-10 seconds')
+    expect(ms(createMsFromYears(-1))).toBe('-1y')
+    expect(ms(createMsFromYears(-1.2))).toBe('-1y')
+    expect(ms(createMsFromYears(-10))).toBe('-10y')
   })
 
-  it('should support minutes', function () {
-    expect(ms(60 * 1000, { long: true, decimal: 1 })).toBe('1 minute')
-    expect(ms(60 * 1200, { long: true, decimal: 1 })).toBe('1.2 minute')
-    expect(ms(60 * 10000, { long: true, decimal: 1 })).toBe('10 minutes')
+  it('should round', () => {
+    expect(ms(roundingInputMs)).toBe('3d')
 
-    expect(ms(-1 * 60 * 1000, { long: true, decimal: 1 })).toBe('-1 minute')
-    expect(ms(-1 * 60 * 1200, { long: true, decimal: 1 })).toBe('-1.2 minute')
-    expect(ms(-1 * 60 * 10000, { long: true, decimal: 1 })).toBe('-10 minutes')
-  })
-
-  it('should support hours', function () {
-    expect(ms(60 * 60 * 1000, { long: true, decimal: 1 })).toBe('1 hour')
-    expect(ms(60 * 60 * 1200, { long: true, decimal: 1 })).toBe('1.2 hour')
-    expect(ms(60 * 60 * 10000, { long: true, decimal: 1 })).toBe('10 hours')
-
-    expect(ms(-1 * 60 * 60 * 1000, { long: true, decimal: 1 })).toBe('-1 hour')
-    expect(ms(-1 * 60 * 60 * 1200, { long: true, decimal: 1 })).toBe('-1.2 hour')
-    expect(ms(-1 * 60 * 60 * 10000, { long: true, decimal: 1 })).toBe('-10 hours')
-  })
-
-  it('should support days', function () {
-    expect(ms(24 * 60 * 60 * 1000, { long: true, decimal: 1 })).toBe('1 day')
-    expect(ms(24 * 60 * 60 * 1200, { long: true, decimal: 1 })).toBe('1.2 day')
-    expect(ms(24 * 60 * 60 * 10000, { long: true, decimal: 1 })).toBe('10 days')
-
-    expect(ms(-1 * 24 * 60 * 60 * 1000, { long: true, decimal: 1 })).toBe('-1 day')
-    expect(ms(-1 * 24 * 60 * 60 * 1200, { long: true, decimal: 1 })).toBe('-1.2 day')
-    expect(ms(-1 * 24 * 60 * 60 * 10000, { long: true, decimal: 1 })).toBe('-10 days')
-  })
-
-  it('should round with 2 decimal place', function () {
-    expect(ms(234234234, { long: true, decimal: 2 })).toBe('2.71 days')
-
-    expect(ms(-234234234, { long: true, decimal: 2 })).toBe('-2.71 days')
-  })
-
-  it('should round with up to 3 decimal place', function () {
-    expect(ms(234234234, { long: true, decimal: 3 })).toBe('2.711 days')
-    expect(ms(234234234, { long: true, decimal: 10 })).toBe('2.711 days')
-
-    expect(ms(-234234234, { long: true, decimal: 3 })).toBe('-2.711 days')
-    expect(ms(-234234234, { long: true, decimal: 10 })).toBe('-2.711 days')
-
-    // @ts-ignore
-    expect(ms(ms('10.54321 hours'), { long: true, decimal: 1 })).toBe('10.5 hours')
-    expect(ms(-3 * 66121, { long: true, decimal: 1 })).toBe('-3.3 minutes')
-  })
-})
-
-describe('ms(number, { decimal: n })', function () {
-  it('should not throw an error', function () {
-    expect(function () {
-      ms(500, { decimal: 1 })
-    }).not.toThrowError()
-  })
-
-  it('should support milliseconds', function () {
-    expect(ms(500, { decimal: 1 })).toBe('500ms')
-
-    expect(ms(-500, { decimal: 1 })).toBe('-500ms')
-  })
-
-  it('should support seconds', function () {
-    expect(ms(1000, { decimal: 1 })).toBe('1s')
-    expect(ms(1200, { decimal: 1 })).toBe('1.2s')
-    expect(ms(10000, { decimal: 1 })).toBe('10s')
-
-    expect(ms(-1000, { decimal: 1 })).toBe('-1s')
-    expect(ms(-1200, { decimal: 1 })).toBe('-1.2s')
-    expect(ms(-10000, { decimal: 1 })).toBe('-10s')
-  })
-
-  it('should support minutes', function () {
-    expect(ms(60 * 1000, { decimal: 1 })).toBe('1m')
-    expect(ms(60 * 1200, { decimal: 1 })).toBe('1.2m')
-    expect(ms(60 * 10000, { decimal: 1 })).toBe('10m')
-
-    expect(ms(-1 * 60 * 1000, { decimal: 1 })).toBe('-1m')
-    expect(ms(-1 * 60 * 1200, { decimal: 1 })).toBe('-1.2m')
-    expect(ms(-1 * 60 * 10000, { decimal: 1 })).toBe('-10m')
-  })
-
-  it('should support hours', function () {
-    expect(ms(60 * 60 * 1000, { decimal: 1 })).toBe('1h')
-    expect(ms(60 * 60 * 1200, { decimal: 1 })).toBe('1.2h')
-    expect(ms(60 * 60 * 10000, { decimal: 1 })).toBe('10h')
-
-    expect(ms(-1 * 60 * 60 * 1000, { decimal: 1 })).toBe('-1h')
-    expect(ms(-1 * 60 * 60 * 1200, { decimal: 1 })).toBe('-1.2h')
-    expect(ms(-1 * 60 * 60 * 10000, { decimal: 1 })).toBe('-10h')
-  })
-
-  it('should support days', function () {
-    expect(ms(24 * 60 * 60 * 1000, { decimal: 1 })).toBe('1d')
-    expect(ms(24 * 60 * 60 * 1200, { decimal: 1 })).toBe('1.2d')
-    expect(ms(24 * 60 * 60 * 10000, { decimal: 1 })).toBe('10d')
-
-    expect(ms(-1 * 24 * 60 * 60 * 1000, { decimal: 1 })).toBe('-1d')
-    expect(ms(-1 * 24 * 60 * 60 * 1200, { decimal: 1 })).toBe('-1.2d')
-    expect(ms(-1 * 24 * 60 * 60 * 10000, { decimal: 1 })).toBe('-10d')
-  })
-
-  it('should round with 2 decimal place', function () {
-    expect(ms(234234234, { decimal: 2 })).toBe('2.71d')
-
-    expect(ms(-234234234, { decimal: 2 })).toBe('-2.71d')
-  })
-
-  it('should round with up to 3 decimal place', function () {
-    expect(ms(234234234, { decimal: 3 })).toBe('2.711d')
-    expect(ms(234234234, { decimal: 10 })).toBe('2.711d')
-
-    expect(ms(-234234234, { decimal: 3 })).toBe('-2.711d')
-    expect(ms(-234234234, { decimal: 10 })).toBe('-2.711d')
-
-    // @ts-ignore
-    expect(ms(ms('10.54321 hours'), { decimal: 1 })).toBe('10.5h')
-    expect(ms(-3 * 66121, { decimal: 1 })).toBe('-3.3m')
+    expect(ms(-roundingInputMs)).toBe('-3d')
   })
 })

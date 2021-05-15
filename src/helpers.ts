@@ -1,3 +1,5 @@
+import { SupportedUnit } from './interfaces'
+
 /** Seconds */
 const s = 1000
 /** Minutes */
@@ -73,58 +75,94 @@ export const parse = (str: string): number | undefined => {
     case 'msec':
     case 'ms':
       return n
-    default:
-      return undefined
   }
+}
+
+const formatShortParser = (ms: number, unitNumberOfMs: number, base: number, timeUnit: SupportedUnit): string => {
+  return parseFloat((Math.round((ms / unitNumberOfMs) * base) / base).toFixed(3)) + timeUnit
 }
 
 /**
  * Short format for `ms`.
  */
-export const formatShort = (ms: number, decimal: number): string => {
+export const formatShort = (ms: number, decimal: number, preferredUnit?: SupportedUnit): string => {
   const msAbs = Math.abs(ms)
   const base = Math.pow(10, decimal)
-  if (msAbs >= d) {
-    return parseFloat((Math.round((ms / d) * base) / base).toFixed(3)) + 'd'
+  if (msAbs >= y && (preferredUnit === 'y' || !preferredUnit)) {
+    return formatShortParser(ms, y, base, 'y')
   }
-  if (msAbs >= h) {
-    return parseFloat((Math.round((ms / h) * base) / base).toFixed(3)) + 'h'
+  if (msAbs >= mo && (preferredUnit === 'mo' || !preferredUnit)) {
+    return formatShortParser(ms, mo, base, 'mo')
   }
-  if (msAbs >= m) {
-    return parseFloat((Math.round((ms / m) * base) / base).toFixed(3)) + 'm'
+  if (msAbs >= w && (preferredUnit === 'w' || !preferredUnit)) {
+    return formatShortParser(ms, w, base, 'w')
   }
-  if (msAbs >= s) {
-    return parseFloat((Math.round((ms / s) * base) / base).toFixed(3)) + 's'
+  if (msAbs >= d && (preferredUnit === 'd' || !preferredUnit)) {
+    return formatShortParser(ms, d, base, 'd')
+  }
+  if (msAbs >= h && (preferredUnit === 'h' || !preferredUnit)) {
+    return formatShortParser(ms, h, base, 'h')
+  }
+  if (msAbs >= m && (preferredUnit === 'm' || !preferredUnit)) {
+    return formatShortParser(ms, m, base, 'm')
+  }
+  if (msAbs >= s && (preferredUnit === 's' || !preferredUnit)) {
+    return formatShortParser(ms, s, base, 's')
   }
   return ms + 'ms'
 }
 
 /**
- * Pluralization helper.
+ * Formats the value based on whether or not it's plural
  */
-
-export const plural = (ms: number, msAbs: number, n: number, name: string, decimal: number): string => {
+export const handlePluralPossibility = (
+  ms: number,
+  msAbs: number,
+  n: number,
+  name: string,
+  decimal: number
+): string => {
   const isPlural = msAbs >= n * 1.5
   const base = Math.pow(10, decimal)
   return parseFloat((Math.round((ms / n) * base) / base).toFixed(3)) + ' ' + name + (isPlural ? 's' : '')
 }
 
 /**
- * Long format for `ms`.
+ * Long format for `ms`. Prints the full value of the unit
+ * @example "1 year"
  */
-export const formatLong = (ms: number, decimal: number): string => {
+export const formatLong = (ms: number, decimal: number, preferredUnit?: SupportedUnit): string => {
   const msAbs = Math.abs(ms)
-  if (msAbs >= d) {
-    return plural(ms, msAbs, d, 'day', decimal)
+  if (msAbs >= y && (preferredUnit === 'y' || !preferredUnit)) {
+    return handlePluralPossibility(ms, msAbs, y, 'year', decimal)
   }
-  if (msAbs >= h) {
-    return plural(ms, msAbs, h, 'hour', decimal)
+
+  if (msAbs >= mo && (preferredUnit === 'mo' || !preferredUnit)) {
+    return handlePluralPossibility(ms, msAbs, mo, 'month', decimal)
   }
-  if (msAbs >= m) {
-    return plural(ms, msAbs, m, 'minute', decimal)
+
+  if (msAbs >= w && (preferredUnit === 'w' || !preferredUnit)) {
+    return handlePluralPossibility(ms, msAbs, w, 'week', decimal)
   }
-  if (msAbs >= s) {
-    return plural(ms, msAbs, s, 'second', decimal)
+
+  if (msAbs >= d && (preferredUnit === 'd' || !preferredUnit)) {
+    return handlePluralPossibility(ms, msAbs, d, 'day', decimal)
   }
-  return ms + ' ms'
+
+  if (msAbs >= h && (preferredUnit === 'h' || !preferredUnit)) {
+    return handlePluralPossibility(ms, msAbs, h, 'hour', decimal)
+  }
+
+  if (msAbs >= m && (preferredUnit === 'm' || !preferredUnit)) {
+    return handlePluralPossibility(ms, msAbs, m, 'minute', decimal)
+  }
+
+  if (msAbs >= s && (preferredUnit === 's' || !preferredUnit)) {
+    return handlePluralPossibility(ms, msAbs, s, 'second', decimal)
+  }
+
+  if (msAbs >= ms && (preferredUnit === 'ms' || !preferredUnit)) return ms + ' ms'
+
+  // If the preferred unit doesn't match any of the options, re-run without the unit to give the closest estimate
+  return formatLong(ms, decimal, undefined)
 }
