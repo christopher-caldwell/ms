@@ -66,7 +66,7 @@ convertMsToTime(convertTimeToMs('10 hours')) // "10h"
 
 The config is optional, as is every key in the config
 
-| Argument        | Type                                       |                                                       |
+| Argument        | Type                                       | Description                                           |
 | --------------- | ------------------------------------------ | ----------------------------------------------------- |
 | `long`          | `boolean`                                  | If present, will return the long version of the unit. |
 | `preferredUnit` | `'ms', 's', 'm', 'h', 'w', 'd', 'mo', 'y'` | The supported unit you'd like the value returned in.  |
