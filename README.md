@@ -28,33 +28,43 @@ npm install --save @caldwell619/ms
 
 ## Usage
 
+2 main utilities are exposed:
+
+```ts
+import { convertTimeToMs, convertMsToTime } from '@caldwell619/ms'
+```
+
 The only required argument is the input to be converted.
 
 Accepted types are `string` | `number`
 
-### String as logical units
+### Converting logical units to milliseconds
 
 [Full list of supported units](#supported-units)
 
-```js
-ms('5s') // 5000
-ms('1m') // 60000
-ms('10h') // 36000000
-ms('2 days') // 172800000
-ms('1y') // 31557600000
-ms('-1h') // -3600000
+```ts
+import { convertTimeToMs } from '@caldwell619/ms'
+
+convertTimeToMs('5s') // 5000
+convertTimeToMs('1m') // 60000
+convertTimeToMs('10h') // 36000000
+convertTimeToMs('2 days') // 172800000
+convertTimeToMs('1y') // 31557600000
+convertTimeToMs('-1h') // -3600000
 ```
 
 ### Number as milliseconds
 
-```js
-ms(60000) // "1m"
-ms(2 * 60000) // "2m"
-ms(-3 * 60000) // "-3m"
-ms(ms('10 hours')) // "10h"
+```ts
+import { convertMsToTime, convertTimeToMs } from '@caldwell619/ms'
+
+convertMsToTime(60000) // "1m"
+convertMsToTime(2 * 60000) // "2m"
+convertMsToTime(-3 * 60000) // "-3m"
+convertMsToTime(convertTimeToMs('10 hours')) // "10h"
 ```
 
-## Optional Configuration
+#### Optional Configuration
 
 The config is optional, as is every key in the config
 
@@ -63,45 +73,43 @@ The config is optional, as is every key in the config
 | `long`          | `boolean`                                  | If present, will return the long version of the unit. |
 | `preferredUnit` | `'ms', 's', 'm', 'h', 'w', 'd', 'mo', 'y'` | The supported unit you'd like the value returned in.  |
 
-### Long
-
-**Only used for numbers to logical representations.**
+##### Long
 
 This will print the value as `hours`, `minutes` as opposed to `h`, `m`.
 
 ```ts
-ms(60000, { long: true }) // "1 minute"
-ms(2 * 60000, { long: true }) // "2 minutes"
-ms(-3 * 60000, { long: true }) // "-3 minutes"
-ms(ms('10 hours'), { long: true }) // "10 hours"
+convertMsToTime(60000, { long: true }) // "1 minute"
+convertMsToTime(2 * 60000, { long: true }) // "2 minutes"
+convertMsToTime(-3 * 60000, { long: true }) // "-3 minutes"
+convertMsToTime(convertTimeToMs('10 hours'), { long: true }) // "10 hours"
 ```
 
-### Preferred Unit
-
-**Only used for numbers to logical representations.**
+##### Preferred Unit
 
 This is a working progress. It is implemented, but possibly not the way you'd like. Feel free to submit an [issue](https://github.com/christopher-caldwell/ms/issues/new) or [PR](https://github.com/christopher-caldwell/ms/compare) with how you'd like it done.
 
 If provided, it will attempt to match the value with the given unit.
 
-#### Example
+###### Example
 
 For example, if your value resolves to `15 days`, that is also `2 weeks`. The default will return as `2 weeks`. This is the largest bucket the time can be put into.
 
 This can be overridden with providing your `preferredUnit`.
 
 ```ts
-ms(7200000) // "2h"
-ms(7200000, { preferredUnit: 'm' }) // "120m"
+convertMsToTime(7200000) // "2h"
+convertMsToTime(7200000, { preferredUnit: 'm' }) // "120m"
+convertMsToTime(7200000, { preferredUnit: 'm', long: true }) // "120 minutes"
 ```
 
-#### Edge Cases
+###### Edge Cases
 
 If your provided unit doesn't meet the requirement, meaning that the value cannot get to a full count of your unit, it will default to the next closest one.
 
 ```ts
-ms(7200000) // "2h"
-ms(7200000, { preferredUnit: 'd' }) // "2h"
+convertMsToTime(7200000) // "2h"
+convertMsToTime(7200000, { preferredUnit: 'd' }) // "2h"
+convertMsToTime(7200000, { preferredUnit: 'd', long: true }) // "2 hours"
 ```
 
 In this example, 2 hours cannot be represented as a `> 1 day`. This is where the funny business is, because maybe you'd prefer `0.08d` instead of defaulting to `2h`.
@@ -109,6 +117,8 @@ In this example, 2 hours cannot be represented as a `> 1 day`. This is where the
 My preference is the latter, so :man_shrugging:
 
 ## Supported Units
+
+The following unites are supported for `convertTimeToMs`
 
 ### Years
 
