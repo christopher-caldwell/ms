@@ -5,8 +5,12 @@ Forked from [vercel/ms](https://github.com/vercel/ms)
 
 <p align="center">
   <h4/>
-  <img src="https://img.shields.io/npm/v/@caldwell619/ms">
-  <img src="https://img.shields.io/bundlephobia/min/@caldwell619/ms">
+  <a href='https://www.npmjs.com/package/@caldwell619/ms'>
+    <img src="https://img.shields.io/npm/v/@caldwell619/ms">
+  </a>
+  <a href='https://bundlephobia.com/result?p=@caldwell619/ms'>
+    <img src="https://img.shields.io/bundlephobia/min/@caldwell619/ms">
+  </a>
   <img src="https://codecov.io/gh/christopher-caldwell/ms/branch/master/graph/badge.svg?token=2LA7ETDPO3">
   <img src="https://img.shields.io/github/last-commit/christopher-caldwell/ms">
   <img src="https://img.shields.io/npm/types/@caldwell619/ms">

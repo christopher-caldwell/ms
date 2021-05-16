@@ -30,9 +30,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: Install Packages
-        # If the cache hit was not successful, re-run install
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn 
+        run: yarn --prefer-offline
       - name: Lint
         run: yarn lint
       - name: Type Check
