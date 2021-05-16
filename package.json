@@ -1,6 +1,6 @@
 {
   "name": "@caldwell619/ms",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Tiny time formatting utility forked from vercel/ms",
   "main": "dist/index.js",
   "module": "dist/index.module.js",
