@@ -36,7 +36,7 @@ import { convertTimeToMs, convertMsToTime } from '@caldwell619/ms'
 
 The only required argument is the input to be converted.
 
-### Converting logical units to milliseconds
+## Converting logical units to milliseconds
 
 [Full list of supported units](#supported-units)
 
@@ -51,7 +51,7 @@ convertTimeToMs('1y') // 31557600000
 convertTimeToMs('-1h') // -3600000
 ```
 
-### Number as milliseconds
+## Number as milliseconds
 
 ```ts
 import { convertMsToTime, convertTimeToMs } from '@caldwell619/ms'
@@ -62,16 +62,16 @@ convertMsToTime(-3 * 60000) // "-3m"
 convertMsToTime(convertTimeToMs('10 hours')) // "10h"
 ```
 
-#### Optional Configuration
+### Optional Configuration
 
 The config is optional, as is every key in the config
 
 | Argument        | Type                                       | Description                                           |
-| --------------- | ------------------------------------------ | ----------------------------------------------------- |
+| :-------------- | :----------------------------------------- | :---------------------------------------------------- |
 | `long`          | `boolean`                                  | If present, will return the long version of the unit. |
 | `preferredUnit` | `'ms', 's', 'm', 'h', 'w', 'd', 'mo', 'y'` | The supported unit you'd like the value returned in.  |
 
-##### Long
+#### Long
 
 This will print the value as `hours`, `minutes` as opposed to `h`, `m`.
 
@@ -82,13 +82,13 @@ convertMsToTime(-3 * 60000, { long: true }) // "-3 minutes"
 convertMsToTime(convertTimeToMs('10 hours'), { long: true }) // "10 hours"
 ```
 
-##### Preferred Unit
+#### Preferred Unit
 
 This is a working progress. It is implemented, but possibly not the way you'd like. Feel free to submit an [issue](https://github.com/christopher-caldwell/ms/issues/new) or [PR](https://github.com/christopher-caldwell/ms/compare) with how you'd like it done.
 
 If provided, it will attempt to match the value with the given unit.
 
-###### Example
+##### Example
 
 For example, if your value resolves to `15 days`, that is also `2 weeks`. The default will return as `2 weeks`. This is the largest bucket the time can be put into.
 
@@ -100,7 +100,7 @@ convertMsToTime(7200000, { preferredUnit: 'm' }) // "120m"
 convertMsToTime(7200000, { preferredUnit: 'm', long: true }) // "120 minutes"
 ```
 
-###### Edge Cases
+##### Edge Cases
 
 If your provided unit doesn't meet the requirement, meaning that the value cannot get to a full count of your unit, it will default to the next closest one.
 
