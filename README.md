@@ -36,8 +36,6 @@ import { convertTimeToMs, convertMsToTime } from '@caldwell619/ms'
 
 The only required argument is the input to be converted.
 
-Accepted types are `string` | `number`
-
 ### Converting logical units to milliseconds
 
 [Full list of supported units](#supported-units)
