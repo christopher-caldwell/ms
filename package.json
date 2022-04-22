@@ -16,8 +16,9 @@
     "publish-release": "git push --follow-tags origin master && yarn publish",
     "deploy": "sh scripts/publish.sh",
     "predeploy:example": "cd demo && yarn && yarn run build",
-    "deploy:example": "gh-pages -d example/build"
+    "deploy:example": "gh-pages -d demo/dist"
   },
+  "homepage": "https://christopher-caldwell.github.io/ms",
   "repository": {
     "type": "git",
     "url": "git@github.com:christopher-caldwell/ms.git"
