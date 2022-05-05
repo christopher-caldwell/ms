@@ -2,6 +2,7 @@ import { FC, useState, ChangeEvent } from 'react'
 import { TextField, MenuItem } from '@mui/material'
 import { useTextField } from 'use-mui'
 import { convertMsToTime, SupportedUnit } from '@caldwell619/ms'
+import numeral from 'numeral'
 
 import { Display } from '@/components'
 
@@ -14,7 +15,7 @@ export const MsToTime: FC = () => {
   const getConvertedTime = () => {
     if (ms === '') return 'Enter milliseconds'
     try {
-      return convertMsToTime(Number(ms), { preferredUnit })!
+      return numeral(convertMsToTime(Number(ms), { preferredUnit })!).format('0,0')
     } catch (e) {
       return 'Invalid entry'
     }
