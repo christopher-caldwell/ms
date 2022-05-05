@@ -16,6 +16,10 @@ Forked from [vercel/ms](https://github.com/vercel/ms)
   <img src="https://img.shields.io/npm/types/@caldwell619/ms">
 </p>
 
+## Demo
+
+https://christopher-caldwell.github.io/ms/
+
 ## Installation
 
 ```bash
